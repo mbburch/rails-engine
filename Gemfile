@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 gem 'rails', '4.2.4'
 gem 'pg'
 gem 'sass-rails', '~> 5.0'
@@ -19,7 +18,7 @@ gem 'figaro'
 
 group :development, :test do
   gem 'byebug'
-  gem 'pry', :require => 'pry'
+  gem 'pry', require: 'pry'
   gem 'better_errors'
   gem 'rspec-rails', '~> 3.0'
   gem 'database_cleaner'
