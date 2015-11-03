@@ -21,6 +21,14 @@ class Api::V1::ItemsController < ApplicationController
     respond_with Item.limit(1).order("RANDOM()")
   end
 
+  def invoice_items
+    respond_with Item.find_by(search_params).invoice_items
+  end
+
+  def merchant
+    respond_with Item.find_by(search_params).merchant
+  end
+
   private
 
   def search_params
