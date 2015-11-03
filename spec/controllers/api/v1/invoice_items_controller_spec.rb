@@ -43,8 +43,7 @@ RSpec.describe Api::V1::InvoiceItemsController, type: :controller do
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(2).to eq(json_response[:quantity])
-      binding.pry
-      expect(12345).to eq(json_response[:unit_price])
+      expect("12345.0").to eq(json_response[:unit_price])
     end
   end
 
@@ -72,7 +71,7 @@ RSpec.describe Api::V1::InvoiceItemsController, type: :controller do
     it "returns the correct invoice item with unit price" do
       get :find, format: :json, unit_price: 12345
       json_response = JSON.parse(response.body, symbolize_names: true)
-      expect(12345).to eq(json_response[:unit_price])
+      expect("12345.0").to eq(json_response[:unit_price])
     end
   end
 

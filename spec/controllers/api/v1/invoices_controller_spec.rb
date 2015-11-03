@@ -9,88 +9,85 @@ RSpec.describe Api::V1::InvoicesController, type: :controller do
       expect(response).to have_http_status(200)
     end
 
-    it "returns the correct number of customers" do
-      Customer.create!(first_name: "Josh", last_name: "Mejia")
-      Customer.create!(first_name: "Jorge", last_name: "Tellez")
+    it "returns the correct number of invoices" do
+      Invoice.create!(status: "shipped")
+      Invoice.create!(status: "shipped")
 
-      number_of_customers = Customer.count
+      number_of_invoices = Invoice.count
 
       get :index, format: :json
 
       json_response = JSON.parse(response.body)
 
-      expect(number_of_customers).to eq(json_response.count)
+      expect(number_of_invoices).to eq(json_response.count)
     end
   end
 
   describe "GET #show" do
     before do
-      @custy_one = Customer.create!(first_name: "Josh", last_name: "Mejia")
-      Customer.create!(first_name: "Jorge", last_name: "Tellez")
-      Customer.create!(first_name: "Josh", last_name: "Cheek")
+      @invoice = Invoice.create!(status: "shipped")
+      Invoice.create!(status: "shipped")
     end
 
     it "responds with 200 success" do
-      get :show, format: :json, id: @custy_one.id
+      get :show, format: :json, id: @invoice.id
 
       expect(response).to be_success
       expect(response).to have_http_status(200)
     end
 
-    it "returns the correct customer" do
-      get :show, format: :json, id: @custy_one.id
+    it "returns the correct invoice" do
+      get :show, format: :json, id: @invoice.id
 
       json_response = JSON.parse(response.body, symbolize_names: true)
 
-      expect("Josh").to eq(json_response[:first_name])
-      expect("Mejia").to eq(json_response[:last_name])
+      expect("shipped").to eq(json_response[:status])
+      expect(@invoice.id).to eq(json_response[:id])
     end
   end
 
   describe "GET #find" do
     before do
-      Customer.create!(first_name: "Josh", last_name: "Mejia")
-      Customer.create!(first_name: "Jorge", last_name: "Tellez")
-      Customer.create!(first_name: "Josh", last_name: "Cheek")
+      @invoice = Invoice.create!(status: "shipped")
+      Invoice.create!(status: "shipped")
     end
 
     it "responds with 200 success" do
-      get :find, format: :json, last_name: "Tellez"
+      get :find, format: :json, status: "shipped"
 
       expect(response).to be_success
       expect(response).to have_http_status(200)
     end
 
-    it "returns the correct customer with first name" do
-      get :find, format: :json, first_name: "Josh"
+    it "returns the correct invoice with status" do
+      get :find, format: :json, status: "shipped"
 
       json_response = JSON.parse(response.body, symbolize_names: true)
-      expect("Josh").to eq(json_response[:first_name])
+      expect("shipped").to eq(json_response[:status])
     end
 
-    it "returns the correct customer with case insensitive last name" do
-      get :find, format: :json, last_name: "mEjIa"
+    it "returns the correct invoice with id" do
+      get :find, format: :json, id: @invoice.id
       json_response = JSON.parse(response.body, symbolize_names: true)
-      expect("Mejia").to eq(json_response[:last_name])
+      expect(@invoice.id).to eq(json_response[:id])
     end
   end
 
   describe "GET #find_all" do
     before do
-      Customer.create!(first_name: "Josh", last_name: "Mejia")
-      Customer.create!(first_name: "Jorge", last_name: "Tellez")
-      Customer.create!(first_name: "Josh", last_name: "Cheek")
+      @invoice = Invoice.create!(status: "shipped")
+      Invoice.create!(status: "shipped")
     end
 
     it "responds with 200 success" do
-      get :find_all, format: :json, first_name: "Josh"
+      get :find_all, format: :json, status: "shipped"
 
       expect(response).to be_success
       expect(response).to have_http_status(200)
     end
 
-    it "returns the correct customers with first name" do
-      get :find_all, format: :json, first_name: "Josh"
+    it "returns the correct invoices with status" do
+      get :find_all, format: :json, status: "shipped"
       json_response = JSON.parse(response.body, symbolize_names: true)
       expect(json_response.count).to eq(2)
     end
@@ -98,9 +95,8 @@ RSpec.describe Api::V1::InvoicesController, type: :controller do
 
   describe "GET #random" do
     before do
-      Customer.create!(first_name: "Josh", last_name: "Mejia")
-      Customer.create!(first_name: "Jorge", last_name: "Tellez")
-      Customer.create!(first_name: "Josh", last_name: "Cheek")
+      Invoice.create!(status: "shipped")
+      Invoice.create!(status: "shipped")
     end
 
     it "responds with 200 success" do
@@ -110,10 +106,10 @@ RSpec.describe Api::V1::InvoicesController, type: :controller do
       expect(response).to have_http_status(200)
     end
 
-    it "returns a random customer" do
+    it "returns a random invoice" do
       @results = []
 
-      5.times do
+      10.times do
         get :random, format: :json
         response_one = JSON.parse(response.body, symbolize_names: true)
         get :random, format: :json
