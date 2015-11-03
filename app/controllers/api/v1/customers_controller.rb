@@ -22,11 +22,11 @@ class Api::V1::CustomersController < ApplicationController
   end
 
   def invoices
-    respond_with Customer.find_by(id: search_params[:customer_id]).invoices
+    respond_with Customer.find_by(search_params).invoices
   end
 
   def transactions
-    respond_with Customer.find_by(id: search_params[:customer_id]).transactions
+    respond_with Customer.find_by(search_params).transactions
   end
 
   private
@@ -36,7 +36,6 @@ class Api::V1::CustomersController < ApplicationController
                   :first_name,
                   :last_name,
                   :updated_at,
-                  :created_at,
-                  :customer_id)
+                  :created_at)
   end
 end

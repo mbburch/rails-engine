@@ -22,23 +22,23 @@ class Api::V1::InvoicesController < ApplicationController
   end
 
   def transactions
-    respond_with Invoice.find_by(id: search_params[:invoice_id]).transactions
+    respond_with Invoice.find_by(search_params).transactions
   end
 
   def invoice_items
-    respond_with Invoice.find_by(id: search_params[:invoice_id]).invoice_items
+    respond_with Invoice.find_by(search_params).invoice_items
   end
 
   def items
-    respond_with Invoice.find_by(id: search_params[:invoice_id]).items
+    respond_with Invoice.find_by(search_params).items
   end
 
   def customer
-    respond_with Invoice.find_by(id: search_params[:invoice_id]).customer
+    respond_with Invoice.find_by(search_params).customer
   end
 
   def merchant
-    respond_with Invoice.find_by(id: search_params[:invoice_id]).merchant
+    respond_with Invoice.find_by(search_params).merchant
   end
 
   private
@@ -49,7 +49,6 @@ class Api::V1::InvoicesController < ApplicationController
                   :merchant_id,
                   :customer_id,
                   :updated_at,
-                  :created_at,
-                  :invoice_id)
+                  :created_at)
   end
 end

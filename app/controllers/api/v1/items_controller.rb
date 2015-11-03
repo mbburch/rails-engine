@@ -22,11 +22,11 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def invoice_items
-    respond_with Item.find_by(id: search_params[:item_id]).invoice_items
+    respond_with Item.find_by(search_params).invoice_items
   end
 
   def merchant
-    respond_with Item.find_by(id: search_params[:item_id]).merchant
+    respond_with Item.find_by(search_params).merchant
   end
 
   private
@@ -38,7 +38,6 @@ class Api::V1::ItemsController < ApplicationController
                   :unit_price,
                   :merchant_id,
                   :updated_at,
-                  :created_at,
-                  :item_id)
+                  :created_at)
   end
 end

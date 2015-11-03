@@ -22,7 +22,7 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def invoice
-    respond_with Transaction.find_by(id: search_params[:transaction_id]).invoice
+    respond_with Transaction.find_by(search_params).invoice
   end
 
   private
@@ -34,7 +34,6 @@ class Api::V1::TransactionsController < ApplicationController
                   :credit_card_expiration_date,
                   :result,
                   :updated_at,
-                  :created_at,
-                  :transaction_id)
+                  :created_at)
   end
 end

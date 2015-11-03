@@ -22,11 +22,11 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def items
-    respond_with Merchant.find_by(id: search_params[:merchant_id]).items
+    respond_with Merchant.find_by(search_params).items
   end
 
   def invoices
-    respond_with Merchant.find_by(id: search_params[:merchant_id]).invoices
+    respond_with Merchant.find_by(search_params).invoices
   end
 
   private
@@ -35,7 +35,6 @@ class Api::V1::MerchantsController < ApplicationController
     params.permit(:id,
                   :name,
                   :updated_at,
-                  :created_at,
-                  :merchant_id)
+                  :created_at)
   end
 end
