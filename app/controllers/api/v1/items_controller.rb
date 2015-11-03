@@ -21,6 +21,14 @@ class Api::V1::ItemsController < ApplicationController
     respond_with Item.limit(1).order("RANDOM()")
   end
 
+  def invoice_items
+    respond_with Item.find_by(id: search_params[:item_id]).invoice_items
+  end
+
+  def merchant
+    respond_with Item.find_by(id: search_params[:item_id]).merchant
+  end
+
   private
 
   def search_params
@@ -30,6 +38,7 @@ class Api::V1::ItemsController < ApplicationController
                   :unit_price,
                   :merchant_id,
                   :updated_at,
-                  :created_at)
+                  :created_at,
+                  :item_id)
   end
 end

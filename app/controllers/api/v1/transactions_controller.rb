@@ -21,6 +21,10 @@ class Api::V1::TransactionsController < ApplicationController
     respond_with Transaction.limit(1).order("RANDOM()")
   end
 
+  def invoice
+    respond_with Transaction.find_by(id: search_params[:transaction_id]).invoice
+  end
+
   private
 
   def search_params
@@ -30,6 +34,7 @@ class Api::V1::TransactionsController < ApplicationController
                   :credit_card_expiration_date,
                   :result,
                   :updated_at,
-                  :created_at)
+                  :created_at,
+                  :transaction_id)
   end
 end

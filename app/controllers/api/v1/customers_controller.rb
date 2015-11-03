@@ -21,6 +21,14 @@ class Api::V1::CustomersController < ApplicationController
     respond_with Customer.limit(1).order("RANDOM()")
   end
 
+  def invoices
+    respond_with Customer.find_by(id: search_params[:customer_id]).invoices
+  end
+
+  def transactions
+    respond_with Customer.find_by(id: search_params[:customer_id]).transactions
+  end
+
   private
 
   def search_params
@@ -28,6 +36,7 @@ class Api::V1::CustomersController < ApplicationController
                   :first_name,
                   :last_name,
                   :updated_at,
-                  :created_at)
+                  :created_at,
+                  :customer_id)
   end
 end

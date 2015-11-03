@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     namespace :v1 do
 
       resources :customers, only: [:index, :show], defaults: { format: 'json' } do
+        get :invoices
+        get :transactions
         collection do
           get :find
           get :find_all
@@ -24,6 +26,8 @@ Rails.application.routes.draw do
       end
 
       resources :invoice_items, only: [:index, :show], defaults: { format: 'json' } do
+        get :invoice
+        get :item
         collection do
           get :find
           get :find_all
@@ -32,6 +36,8 @@ Rails.application.routes.draw do
       end
 
       resources :items, only: [:index, :show], defaults: { format: 'json' } do
+        get :invoice_items
+        get :merchant
         collection do
           get :find
           get :find_all
@@ -50,6 +56,7 @@ Rails.application.routes.draw do
       end
 
       resources :transactions, only: [:index, :show], defaults: { format: 'json' } do
+        get :invoice
         collection do
           get :find
           get :find_all
