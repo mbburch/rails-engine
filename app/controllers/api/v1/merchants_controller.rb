@@ -21,12 +21,21 @@ class Api::V1::MerchantsController < ApplicationController
     respond_with Merchant.limit(1).order("RANDOM()")
   end
 
+  def items
+    respond_with Merchant.find_by(id: search_params[:merchant_id]).items
+  end
+
+  def invoices
+    respond_with Merchant.find_by(id: search_params[:merchant_id]).invoices
+  end
+
   private
 
   def search_params
     params.permit(:id,
                   :name,
                   :updated_at,
-                  :created_at)
+                  :created_at,
+                  :merchant_id)
   end
 end

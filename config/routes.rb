@@ -11,6 +11,11 @@ Rails.application.routes.draw do
       end
 
       resources :invoices, only: [:index, :show], defaults: { format: 'json' } do
+        get :transactions
+        get :invoice_items
+        get :items
+        get :customer
+        get :merchant
         collection do
           get :find
           get :find_all
@@ -35,6 +40,8 @@ Rails.application.routes.draw do
       end
 
       resources :merchants, only: [:index, :show], defaults: { format: 'json' } do
+        get :items
+        get :invoices
         collection do
           get :find
           get :find_all
