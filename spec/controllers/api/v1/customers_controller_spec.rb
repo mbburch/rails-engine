@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::CustomersController, type: :controller do
   describe "GET #index" do
-
-
     it "responds with 200 success" do
       get :index, format: :json
 
@@ -64,7 +62,7 @@ RSpec.describe Api::V1::CustomersController, type: :controller do
     end
 
     it "returns the correct customer with first name" do
-      get :find, format: :json, name: "Josh"
+      get :find, format: :json, first_name: "Josh"
 
       json_response = JSON.parse(response.body, symbolize_names: true)
       expect("Josh").to eq(json_response[:first_name])
@@ -123,7 +121,6 @@ RSpec.describe Api::V1::CustomersController, type: :controller do
 
         @results << (response_one == response_two)
       end
-      binding.pry
       expect(@results.include?(false)).to eq true
     end
   end
