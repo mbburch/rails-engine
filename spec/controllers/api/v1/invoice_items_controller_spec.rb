@@ -113,7 +113,7 @@ RSpec.describe Api::V1::InvoiceItemsController, type: :controller do
     it "returns a random invoice item" do
       @results = []
 
-      5.times do
+      10.times do
         get :random, format: :json
         response_one = JSON.parse(response.body, symbolize_names: true)
         get :random, format: :json
