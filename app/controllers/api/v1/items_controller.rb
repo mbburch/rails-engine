@@ -18,7 +18,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def random
-    respond_with Item.limit(1).order("RANDOM()")
+    respond_with Item.unscoped.limit(1).order("RANDOM()")
   end
 
   def invoice_items

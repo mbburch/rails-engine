@@ -4,6 +4,8 @@ class Item < ActiveRecord::Base
 
   belongs_to :merchant
 
+  default_scope { order(:id) }
+
   def self.most_revenue(quantity)
     all.max_by(quantity.to_i) { |item| item.revenue[:revenue] }
   end
@@ -21,6 +23,7 @@ class Item < ActiveRecord::Base
   end
 
   def best_day
-    { best_day: invoices.successful.group('invoices.created_at').sum('quantity').sort_by { |key, val| val }.reverse.flatten.first }
+    date_quantity = invoices.successful.group('invoices.created_at').sum('quantity')
+    { best_day: date_quantity.sort_by { |key, val| val }.reverse.flatten.first }
   end
 end
