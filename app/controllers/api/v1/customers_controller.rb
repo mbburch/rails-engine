@@ -29,6 +29,10 @@ class Api::V1::CustomersController < ApplicationController
     respond_with Customer.find_by(search_params).transactions
   end
 
+  def favorite_merchant
+    respond_with Customer.find_by(search_params).favorite_merchant
+  end
+
   private
 
   def search_params
