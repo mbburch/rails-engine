@@ -1259,6 +1259,18 @@
         null,
         null,
         1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
         null,
         1,
         8,
@@ -1960,6 +1972,26 @@
         1,
         null,
         1,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
         null
       ],
       "/Users/mbburch/turing/3-module/projects/rails-engine/spec/models/merchant_spec.rb": [
@@ -2036,6 +2068,6 @@
         null
       ]
     },
-    "timestamp": 1446665730
+    "timestamp": 1446668493
   }
 }
