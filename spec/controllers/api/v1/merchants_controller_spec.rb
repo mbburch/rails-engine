@@ -118,4 +118,50 @@ RSpec.describe Api::V1::MerchantsController, type: :controller do
       expect(@results.include?(false)).to eq true
     end
   end
+
+  describe "GET #items" do
+    before do
+      @merchant = Merchant.create!(name: "Merchant One")
+      Item.create!(merchant_id: @merchant.id, name: "item", description: "awesome", unit_price: 12345)
+      Item.create!(merchant_id: @merchant.id, name: "another item", description: "wow", unit_price: 123)
+    end
+
+    it "responds with 200 success" do
+      get :items, format: :json, id: @merchant.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns all merchant items" do
+      get :items, format: :json, id: @merchant.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.count).to eq(2)
+      expect(json_response.first[:merchant_id]).to eq(@merchant.id)
+    end
+  end
+
+  describe "GET #invoices" do
+    before do
+      @merchant = Merchant.create!(name: "Merchant One")
+      Invoice.create!(merchant_id: @merchant.id, status: "shipped")
+      Invoice.create!(merchant_id: @merchant.id, status: "shipped")
+    end
+
+    it "responds with 200 success" do
+      get :invoices, format: :json, id: @merchant.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns all merchant invoices" do
+      get :invoices, format: :json, id: @merchant.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.count).to eq(2)
+      expect(json_response.first[:merchant_id]).to eq(@merchant.id)
+    end
+  end
 end

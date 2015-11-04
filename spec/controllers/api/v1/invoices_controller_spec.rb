@@ -120,4 +120,119 @@ RSpec.describe Api::V1::InvoicesController, type: :controller do
       expect(@results.include?(false)).to eq true
     end
   end
+
+  describe "GET #transactions" do
+    before do
+      @invoice     = Invoice.create!(status: "shipped")
+      @transaction_one = Transaction.create!(invoice_id: @invoice.id, credit_card_number: "1234123412341234", result: "success")
+      @transaction_two = Transaction.create!(invoice_id: @invoice.id, credit_card_number: "1234567812345678", result: "success")
+
+    end
+
+    it "responds with 200 success" do
+      get :transactions, format: :json, id: @invoice.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns all associated transactions" do
+      get :transactions, format: :json, id: @invoice.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.count).to eq(2)
+      expect(json_response.first[:invoice_id]).to eq(@invoice.id)
+    end
+  end
+
+  describe "GET #invoice_items" do
+    before do
+      @invoice     = Invoice.create!(status: "shipped")
+      @one = InvoiceItem.create!(invoice_id: @invoice.id, quantity: 2, unit_price: 12345)
+      @two = InvoiceItem.create!(invoice_id: @invoice.id, quantity: 4, unit_price: 54321)
+
+    end
+
+    it "responds with 200 success" do
+      get :invoice_items, format: :json, id: @invoice.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns all associated invoice items" do
+      get :invoice_items, format: :json, id: @invoice.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.count).to eq(2)
+      expect(json_response.first[:invoice_id]).to eq(@invoice.id)
+    end
+  end
+
+  describe "GET #items" do
+    before do
+      @invoice     = Invoice.create!(status: "shipped")
+      @item_one    = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two    = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      InvoiceItem.create!(item_id: @item_one.id, invoice_id: @invoice.id, quantity: 2, unit_price: 12345)
+      InvoiceItem.create!(item_id: @item_two.id, invoice_id: @invoice.id, quantity: 4, unit_price: 54321)
+    end
+
+    it "responds with 200 success" do
+      get :items, format: :json, id: @invoice.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns associated items" do
+      get :items, format: :json, id: @invoice.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.count).to eq(2)
+      expect(json_response.first[:id]).to eq(@item_one.id)
+    end
+  end
+
+  describe "GET #customer" do
+    before do
+      @customer = Customer.create!(first_name: "Josh", last_name: "Mejia")
+      @invoice  = Invoice.create!(customer_id: @customer.id, status: "shipped")
+    end
+
+    it "responds with 200 success" do
+      get :customer, format: :json, id: @invoice.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns associated customer" do
+      get :customer, format: :json, id: @invoice.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response[:id]).to eq(@customer.id)
+    end
+  end
+
+  describe "GET #merchant" do
+    before do
+      @merchant = Merchant.create!(name: "Merchant")
+      @invoice  = Invoice.create!(merchant_id: @merchant.id, status: "shipped")
+    end
+
+    it "responds with 200 success" do
+      get :merchant, format: :json, id: @invoice.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns associated merchant" do
+      get :merchant, format: :json, id: @invoice.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response[:id]).to eq(@merchant.id)
+    end
+  end
 end

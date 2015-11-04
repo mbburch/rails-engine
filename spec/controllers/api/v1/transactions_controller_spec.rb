@@ -118,4 +118,25 @@ RSpec.describe Api::V1::TransactionsController, type: :controller do
       expect(@results.include?(false)).to eq true
     end
   end
+
+  describe "GET #invoice" do
+    before do
+      @invoice     = Invoice.create!(status: "shipped")
+      @transaction = Transaction.create!(invoice_id: @invoice.id, credit_card_number: "1234123412341234", result: "success")
+    end
+
+    it "responds with 200 success" do
+      get :invoice, format: :json, id: @transaction.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns the associated invoice" do
+      get :invoice, format: :json, id: @transaction.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response[:id]).to eq(@invoice.id)
+    end
+  end
 end

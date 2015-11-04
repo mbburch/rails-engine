@@ -91,6 +91,7 @@ RSpec.describe Api::V1::CustomersController, type: :controller do
 
     it "returns the correct customers with first name" do
       get :find_all, format: :json, first_name: "Josh"
+
       json_response = JSON.parse(response.body, symbolize_names: true)
       expect(json_response.count).to eq(2)
     end
@@ -122,6 +123,54 @@ RSpec.describe Api::V1::CustomersController, type: :controller do
         @results << (response_one == response_two)
       end
       expect(@results.include?(false)).to eq true
+    end
+  end
+
+  describe "GET #invoices" do
+    before do
+      @custy_one = Customer.create!(first_name: "Josh", last_name: "Mejia")
+      Invoice.create!(customer_id: @custy_one.id, status: "shipped")
+      Invoice.create!(customer_id: @custy_one.id, status: "shipped")
+    end
+
+    it "responds with 200 success" do
+      get :invoices, format: :json, id: @custy_one.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns all customer invoices" do
+      get :invoices, format: :json, id: @custy_one.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.count).to eq(2)
+      expect(json_response.first[:customer_id]).to eq(@custy_one.id)
+    end
+  end
+
+  describe "GET #transactions" do
+    before do
+      @custy_one   = Customer.create!(first_name: "Josh", last_name: "Mejia")
+      @invoice_one = Invoice.create!(customer_id: @custy_one.id, status: "shipped")
+      @invoice_two = Invoice.create!(customer_id: @custy_one.id, status: "shipped")
+      Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
+      Transaction.create!(invoice_id: @invoice_two.id, credit_card_number: "4321432143214321", result: "failed")
+    end
+
+    it "responds with 200 success" do
+      get :transactions, format: :json, id: @custy_one.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns all customer transactions" do
+      get :transactions, format: :json, id: @custy_one.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.count).to eq(2)
+      expect(json_response.first[:invoice_id]).to eq(@invoice_one.id)
     end
   end
 end
