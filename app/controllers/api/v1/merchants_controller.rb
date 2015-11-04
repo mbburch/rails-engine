@@ -30,16 +30,34 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def most_revenue
-    # top x merchants ranked by total revenue
+    respond_with Merchant.most_revenue(params[:quantity])
   end
 
   def most_items
-    # top x merchants ranked by total number of items sold
+    respond_with Merchant.most_items(params[:quantity])
   end
 
-  def revenue
-    # total revenue for x date across all merchants
+  def revenue_by_date
+    respond_with Merchant.total_revenue(params[:date])
   end
+
+  def individual_revenue
+    if params[:date]
+      respond_with Merchant.find_by(search_params).revenue_by_date(params[:date])
+    else
+      respond_with Merchant.find_by(search_params).merchant_revenue
+    end
+  end
+
+
+  def favorite_customer
+    respond_with Merchant.find_by(search_params).favorite_customer
+  end
+
+  def customers_with_pending_invoices
+    respond_with Merchant.find_by(search_params).customers_with_pending_invoices
+  end
+
 
   private
 

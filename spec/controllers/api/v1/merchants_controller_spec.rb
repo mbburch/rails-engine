@@ -164,4 +164,65 @@ RSpec.describe Api::V1::MerchantsController, type: :controller do
       expect(json_response.first[:merchant_id]).to eq(@merchant.id)
     end
   end
+
+  describe "GET #favorite_customer" do
+    before do
+      @merchant = Merchant.create!(name: "Merchant One")
+      @customer = Customer.create!(first_name: "Josh", last_name: "Mejia")
+      Customer.create!(first_name: "Jorge", last_name: "Tellez")
+      @invoice_one   = Invoice.create!(customer_id: @customer.id, merchant_id: @merchant.id, status: "shipped")
+                       Invoice.create!(customer_id: @customer.id, merchant_id: @merchant.id, status: "shipped")
+      @invoice_three = Invoice.create!(customer_id: @customer.id, merchant_id: @merchant.id, status: "shipped")
+      @trans_one     = Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
+      @trans_two     = Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "4321432143214321", result: "failed")
+      @trans_three   = Transaction.create!(invoice_id: @invoice_three.id, credit_card_number: "1234567812345678", result: "success")
+    end
+
+    it "responds with 200 success" do
+      get :favorite_customer, format: :json, id: @merchant.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns favorite_customer" do
+      get :favorite_customer, format: :json, id: @merchant.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json_response[:first_name]).to eq("Josh")
+      expect(json_response[:id]).to eq(@customer.id)
+    end
+  end
+
+  describe "GET #customers_with_pending_invoices" do
+    before do
+      @merchant      = Merchant.create!(name: "Merchant One")
+      @customer      = Customer.create!(first_name: "Josh", last_name: "Mejia")
+      @customer_two  = Customer.create!(first_name: "Jorge", last_name: "Tellez")
+      @invoice_one   = Invoice.create!(customer_id: @customer.id, merchant_id: @merchant.id, status: "shipped")
+                       Invoice.create!(customer_id: @customer.id, merchant_id: @merchant.id, status: "shipped")
+      @invoice_three = Invoice.create!(customer_id: @customer_two.id, merchant_id: @merchant.id, status: "shipped")
+      @trans_one     = Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
+      @trans_two     = Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "4321432143214321", result: "failed")
+      @trans_three   = Transaction.create!(invoice_id: @invoice_three.id, credit_card_number: "1234567812345678", result: "failed")
+    end
+
+    it "responds with 200 success" do
+      get :customers_with_pending_invoices, format: :json, id: @merchant.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns customers_with_pending_invoices" do
+      get :customers_with_pending_invoices, format: :json, id: @merchant.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json_response.count).to eq(2)
+      expect(json_response[0][:first_name]).to eq("Josh")
+      expect(json_response[1][:first_name]).to eq("Jorge")
+    end
+  end
 end

@@ -6,6 +6,11 @@ class Invoice < ActiveRecord::Base
   belongs_to :customer
   belongs_to :merchant
 
-  def self.success
+  def self.successful
+    Invoice.joins(:transactions).where(transactions: { result: "success" })
+  end
+
+  def self.pending
+    Invoice.joins(:transactions).where(transactions: { result: "failed" })
   end
 end
