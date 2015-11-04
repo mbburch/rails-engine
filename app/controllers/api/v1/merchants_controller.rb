@@ -29,6 +29,18 @@ class Api::V1::MerchantsController < ApplicationController
     respond_with Merchant.find_by(search_params).invoices
   end
 
+  def most_revenue
+    # top x merchants ranked by total revenue
+  end
+
+  def most_items
+    # top x merchants ranked by total number of items sold
+  end
+
+  def revenue
+    # total revenue for x date across all merchants
+  end
+
   private
 
   def search_params

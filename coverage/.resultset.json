@@ -1460,6 +1460,18 @@
         null,
         1,
         null,
+        null,
+        null,
+        1,
+        null,
+        null,
+        null,
+        1,
+        null,
+        null,
+        null,
+        1,
+        null,
         1,
         8,
         null,
@@ -1759,7 +1771,15 @@
         1,
         null,
         1,
+        2,
+        null,
+        null,
         1,
+        1,
+        null,
+        1,
+        1,
+        null,
         null
       ],
       "/Users/mbburch/turing/3-module/projects/rails-engine/app/models/customer.rb": [
@@ -1772,7 +1792,15 @@
         1,
         null,
         1,
+        2,
+        null,
+        null,
         1,
+        1,
+        null,
+        1,
+        1,
+        null,
         null
       ],
       "/Users/mbburch/turing/3-module/projects/rails-engine/app/models/invoice_item.rb": [
@@ -1785,7 +1813,13 @@
         1,
         null,
         1,
+        2,
+        null,
         1,
+        1,
+        null,
+        1,
+        null,
         null
       ],
       "/Users/mbburch/turing/3-module/projects/rails-engine/app/models/invoice.rb": [
@@ -1796,13 +1830,25 @@
         null,
         1,
         1,
+        null,
+        1,
+        null,
         null
       ],
       "/Users/mbburch/turing/3-module/projects/rails-engine/spec/models/item_spec.rb": [
         1,
         null,
         1,
+        2,
+        null,
+        null,
+        null,
         1,
+        1,
+        null,
+        1,
+        1,
+        null,
         null
       ],
       "/Users/mbburch/turing/3-module/projects/rails-engine/app/models/item.rb": [
@@ -1817,20 +1863,39 @@
         1,
         null,
         1,
+        2,
+        null,
         1,
+        1,
+        null,
+        1,
+        null,
         null
       ],
       "/Users/mbburch/turing/3-module/projects/rails-engine/app/models/merchant.rb": [
         1,
         1,
         1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
         null
       ],
       "/Users/mbburch/turing/3-module/projects/rails-engine/spec/models/transaction_spec.rb": [
         1,
         null,
         1,
+        2,
+        null,
+        null,
         1,
+        1,
+        null,
+        1,
+        null,
         null
       ],
       "/Users/mbburch/turing/3-module/projects/rails-engine/app/models/transaction.rb": [
@@ -1839,6 +1904,6 @@
         null
       ]
     },
-    "timestamp": 1446605502
+    "timestamp": 1446608697
   }
 }
