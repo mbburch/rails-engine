@@ -124,4 +124,47 @@ RSpec.describe Api::V1::InvoiceItemsController, type: :controller do
       expect(@results.include?(false)).to eq true
     end
   end
+
+  describe "GET #invoice" do
+    before do
+      @invoice      = Invoice.create!(status: "shipped")
+      @invoice_item = InvoiceItem.create!(invoice_id: @invoice.id, quantity: 2, unit_price: 12345)
+    end
+
+    it "responds with 200 success" do
+      get :invoice, format: :json, id: @invoice_item.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns associated invoice" do
+      get :invoice, format: :json, id: @invoice_item.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json_response[:id]).to eq(@invoice.id)
+    end
+  end
+
+  describe "GET #item" do
+    before do
+      @item         = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @invoice_item = InvoiceItem.create!(item_id: @item.id, quantity: 2, unit_price: 12345)
+    end
+
+    it "responds with 200 success" do
+      get :item, format: :json, id: @invoice_item.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns associated item" do
+      get :item, format: :json, id: @invoice_item.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response[:id]).to eq(@item.id)
+    end
+  end
 end
