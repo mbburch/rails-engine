@@ -225,4 +225,140 @@ RSpec.describe Api::V1::MerchantsController, type: :controller do
       expect(json_response[1][:first_name]).to eq("Jorge")
     end
   end
+
+  describe "GET #most_revenue" do
+    before do
+      @merchant       = Merchant.create!(name: "Merchant One")
+      @merchant_two   = Merchant.create!(name: "Merchant Two")
+      @item     = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      @invoice_one = Invoice.create!(merchant_id: @merchant.id,     status: "shipped")
+      @invoice_two = Invoice.create!(merchant_id: @merchant_two.id, status: "shipped")
+      InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 2, unit_price: 12345)
+      InvoiceItem.create!(item_id: @item_two.id, invoice_id: @invoice_two.id, quantity: 2, unit_price: 2345)
+      Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
+      Transaction.create!(invoice_id: @invoice_two.id, credit_card_number: "4321432143214321", result: "success")
+    end
+
+    it "responds with 200 success" do
+      get :most_revenue, format: :json, quantity: '2'
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns items with highest revenue" do
+      get :most_revenue, format: :json, quantity: '2'
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json_response.first[:name]).to eq("Merchant One")
+      expect(json_response.last[:name]).to eq("Merchant Two")
+    end
+  end
+
+  describe "GET #most_items" do
+    before do
+      @merchant       = Merchant.create!(name: "Merchant One")
+      @merchant_two   = Merchant.create!(name: "Merchant Two")
+      @item     = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      @invoice_one = Invoice.create!(merchant_id: @merchant.id,     status: "shipped")
+      @invoice_two = Invoice.create!(merchant_id: @merchant_two.id, status: "shipped")
+      InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 2, unit_price: 12345)
+      InvoiceItem.create!(item_id: @item_two.id, invoice_id: @invoice_two.id, quantity: 2, unit_price: 2345)
+      Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
+      Transaction.create!(invoice_id: @invoice_two.id, credit_card_number: "4321432143214321", result: "success")
+    end
+
+    it "responds with 200 success" do
+      get :most_items, format: :json, quantity: '2'
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns items by total number sold" do
+      get :most_items, format: :json, quantity: '2'
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json_response.first[:name]).to eq("Merchant Two")
+      expect(json_response.last[:name]).to eq("Merchant One")
+    end
+  end
+
+  describe "GET #revenue_by_date" do
+    before do
+      @merchant       = Merchant.create!(name: "Merchant One")
+      @merchant_two   = Merchant.create!(name: "Merchant Two")
+      @item     = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      @invoice_one = Invoice.create!(merchant_id: @merchant.id,     status: "shipped")
+      @invoice_two = Invoice.create!(merchant_id: @merchant_two.id, status: "shipped")
+      InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 2, unit_price: 12345)
+      InvoiceItem.create!(item_id: @item_two.id, invoice_id: @invoice_two.id, quantity: 2, unit_price: 2345)
+      Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
+      Transaction.create!(invoice_id: @invoice_two.id, credit_card_number: "4321432143214321", result: "success")
+    end
+
+    it "responds with 200 success" do
+      get :revenue_by_date, format: :json, date: "2012-04-01 10:54:09 UTC"
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns total revenue for date" do
+      get :revenue_by_date, format: :json, date: "2012-04-01 10:54:09 UTC"
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json_response).to eq({total_revenue: "0.0"})
+    end
+  end
+
+  describe "GET #revenue" do
+    before do
+      @merchant = Merchant.create!(name: "Merchant One")
+      @item     = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      @invoice_one = Invoice.create!(merchant_id: @merchant.id,     status: "shipped", created_at: "2012-04-01 10:54:09 UTC")
+      @invoice_two = Invoice.create!(merchant_id: @merchant.id, status: "shipped", created_at: "2012-05-01 10:54:09 UTC")
+      InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 2, unit_price: 12345)
+      InvoiceItem.create!(item_id: @item_two.id, invoice_id: @invoice_two.id, quantity: 2, unit_price: 2345)
+      Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
+      Transaction.create!(invoice_id: @invoice_two.id, credit_card_number: "4321432143214321", result: "success")
+    end
+
+    it "responds with 200 success" do
+      get :individual_revenue, format: :json, id: @merchant.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns total merchant revenue" do
+      get :individual_revenue, format: :json, id: @merchant.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json_response).to eq({revenue: "29380.0"})
+    end
+
+    it "responds with 200 success with date" do
+      get :individual_revenue, format: :json, id: @merchant.id, date: "2012-04-01 10:54:09 UTC"
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns total merchant revenue for date" do
+      get :individual_revenue, format: :json, id: @merchant.id, date: "2012-04-01 10:54:09 UTC"
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json_response).to eq({revenue: "24690.0"})
+    end
+  end
 end

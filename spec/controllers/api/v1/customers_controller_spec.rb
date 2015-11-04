@@ -173,4 +173,30 @@ RSpec.describe Api::V1::CustomersController, type: :controller do
       expect(json_response.first[:invoice_id]).to eq(@invoice_one.id)
     end
   end
+
+  describe "GET #favorite_merchant" do
+    before do
+      @custy_one   = Customer.create!(first_name: "Josh", last_name: "Mejia")
+      @merch_one   = Merchant.create!(name: "Merchant One")
+      @merch_two   = Merchant.create!(name: "Merchant Two")
+      @invoice_one = Invoice.create!(customer_id: @custy_one.id, merchant_id: @merch_one.id, status: "shipped")
+      @invoice_two = Invoice.create!(customer_id: @custy_one.id, merchant_id: @merch_one.id, status: "shipped")
+      Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
+      Transaction.create!(invoice_id: @invoice_two.id, credit_card_number: "4321432143214321", result: "success")
+    end
+
+    it "responds with 200 success" do
+      get :favorite_merchant, format: :json, id: @custy_one.id
+
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns favorite merchant" do
+      get :favorite_merchant, format: :json, id: @custy_one.id
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response[:id]).to eq(@merch_one.id)
+    end
+  end
 end
