@@ -162,8 +162,8 @@ RSpec.describe Api::V1::ItemsController, type: :controller do
 
   describe "GET #most_revenue" do
     before do
-      @item = Item.create!(name: "item", description: "awesome", unit_price: 12345)
-      @item_two = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      @item        = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two    = Item.create!(name: "item two", description: "cool", unit_price: 54321)
       @invoice_one = Invoice.create!(status: "shipped")
       @invoice_two = Invoice.create!(status: "shipped")
       InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 2, unit_price: 12345)
@@ -191,8 +191,8 @@ RSpec.describe Api::V1::ItemsController, type: :controller do
 
   describe "GET #most_items" do
     before do
-      @item = Item.create!(name: "item", description: "awesome", unit_price: 12345)
-      @item_two = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      @item        = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two    = Item.create!(name: "item two", description: "cool", unit_price: 54321)
       @invoice_one = Invoice.create!(status: "shipped")
       @invoice_two = Invoice.create!(status: "shipped")
       InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 4, unit_price: 12345)
@@ -220,7 +220,7 @@ RSpec.describe Api::V1::ItemsController, type: :controller do
 
   describe "GET #best_day" do
     before do
-      @item = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item        = Item.create!(name: "item", description: "awesome", unit_price: 12345)
       @invoice_one = Invoice.create!(status: "shipped", created_at: "2012-03-25 09:54:09 UTC")
       @invoice_two = Invoice.create!(status: "shipped", created_at: "2012-04-01 10:54:09 UTC")
       InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 4, unit_price: 12345)

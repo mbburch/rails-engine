@@ -167,8 +167,8 @@ RSpec.describe Api::V1::MerchantsController, type: :controller do
 
   describe "GET #favorite_customer" do
     before do
-      @merchant = Merchant.create!(name: "Merchant One")
-      @customer = Customer.create!(first_name: "Josh", last_name: "Mejia")
+      @merchant      = Merchant.create!(name: "Merchant One")
+      @customer      = Customer.create!(first_name: "Josh", last_name: "Mejia")
       Customer.create!(first_name: "Jorge", last_name: "Tellez")
       @invoice_one   = Invoice.create!(customer_id: @customer.id, merchant_id: @merchant.id, status: "shipped")
                        Invoice.create!(customer_id: @customer.id, merchant_id: @merchant.id, status: "shipped")
@@ -230,10 +230,10 @@ RSpec.describe Api::V1::MerchantsController, type: :controller do
     before do
       @merchant       = Merchant.create!(name: "Merchant One")
       @merchant_two   = Merchant.create!(name: "Merchant Two")
-      @item     = Item.create!(name: "item", description: "awesome", unit_price: 12345)
-      @item_two = Item.create!(name: "item two", description: "cool", unit_price: 54321)
-      @invoice_one = Invoice.create!(merchant_id: @merchant.id,     status: "shipped")
-      @invoice_two = Invoice.create!(merchant_id: @merchant_two.id, status: "shipped")
+      @item           = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two       = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      @invoice_one    = Invoice.create!(merchant_id: @merchant.id,     status: "shipped")
+      @invoice_two    = Invoice.create!(merchant_id: @merchant_two.id, status: "shipped")
       InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 2, unit_price: 12345)
       InvoiceItem.create!(item_id: @item_two.id, invoice_id: @invoice_two.id, quantity: 2, unit_price: 2345)
       Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
@@ -261,10 +261,10 @@ RSpec.describe Api::V1::MerchantsController, type: :controller do
     before do
       @merchant       = Merchant.create!(name: "Merchant One")
       @merchant_two   = Merchant.create!(name: "Merchant Two")
-      @item     = Item.create!(name: "item", description: "awesome", unit_price: 12345)
-      @item_two = Item.create!(name: "item two", description: "cool", unit_price: 54321)
-      @invoice_one = Invoice.create!(merchant_id: @merchant.id,     status: "shipped")
-      @invoice_two = Invoice.create!(merchant_id: @merchant_two.id, status: "shipped")
+      @item           = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two       = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      @invoice_one    = Invoice.create!(merchant_id: @merchant.id,     status: "shipped")
+      @invoice_two    = Invoice.create!(merchant_id: @merchant_two.id, status: "shipped")
       InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 2, unit_price: 12345)
       InvoiceItem.create!(item_id: @item_two.id, invoice_id: @invoice_two.id, quantity: 2, unit_price: 2345)
       Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
@@ -290,12 +290,12 @@ RSpec.describe Api::V1::MerchantsController, type: :controller do
 
   describe "GET #revenue_by_date" do
     before do
-      @merchant       = Merchant.create!(name: "Merchant One")
-      @merchant_two   = Merchant.create!(name: "Merchant Two")
-      @item     = Item.create!(name: "item", description: "awesome", unit_price: 12345)
-      @item_two = Item.create!(name: "item two", description: "cool", unit_price: 54321)
-      @invoice_one = Invoice.create!(merchant_id: @merchant.id,     status: "shipped")
-      @invoice_two = Invoice.create!(merchant_id: @merchant_two.id, status: "shipped")
+      @merchant     = Merchant.create!(name: "Merchant One")
+      @merchant_two = Merchant.create!(name: "Merchant Two")
+      @item         = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two     = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      @invoice_one  = Invoice.create!(merchant_id: @merchant.id,     status: "shipped")
+      @invoice_two  = Invoice.create!(merchant_id: @merchant_two.id, status: "shipped")
       InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 2, unit_price: 12345)
       InvoiceItem.create!(item_id: @item_two.id, invoice_id: @invoice_two.id, quantity: 2, unit_price: 2345)
       Transaction.create!(invoice_id: @invoice_one.id, credit_card_number: "1234123412341234", result: "success")
@@ -320,9 +320,9 @@ RSpec.describe Api::V1::MerchantsController, type: :controller do
 
   describe "GET #revenue" do
     before do
-      @merchant = Merchant.create!(name: "Merchant One")
-      @item     = Item.create!(name: "item", description: "awesome", unit_price: 12345)
-      @item_two = Item.create!(name: "item two", description: "cool", unit_price: 54321)
+      @merchant    = Merchant.create!(name: "Merchant One")
+      @item        = Item.create!(name: "item", description: "awesome", unit_price: 12345)
+      @item_two    = Item.create!(name: "item two", description: "cool", unit_price: 54321)
       @invoice_one = Invoice.create!(merchant_id: @merchant.id,     status: "shipped", created_at: "2012-04-01 10:54:09 UTC")
       @invoice_two = Invoice.create!(merchant_id: @merchant.id, status: "shipped", created_at: "2012-05-01 10:54:09 UTC")
       InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice_one.id, quantity: 2, unit_price: 12345)

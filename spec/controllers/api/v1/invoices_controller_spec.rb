@@ -123,7 +123,7 @@ RSpec.describe Api::V1::InvoicesController, type: :controller do
 
   describe "GET #transactions" do
     before do
-      @invoice     = Invoice.create!(status: "shipped")
+      @invoice         = Invoice.create!(status: "shipped")
       @transaction_one = Transaction.create!(invoice_id: @invoice.id, credit_card_number: "1234123412341234", result: "success")
       @transaction_two = Transaction.create!(invoice_id: @invoice.id, credit_card_number: "1234567812345678", result: "success")
 
@@ -148,8 +148,8 @@ RSpec.describe Api::V1::InvoicesController, type: :controller do
   describe "GET #invoice_items" do
     before do
       @invoice     = Invoice.create!(status: "shipped")
-      @one = InvoiceItem.create!(invoice_id: @invoice.id, quantity: 2, unit_price: 12345)
-      @two = InvoiceItem.create!(invoice_id: @invoice.id, quantity: 4, unit_price: 54321)
+      @one         = InvoiceItem.create!(invoice_id: @invoice.id, quantity: 2, unit_price: 12345)
+      @two         = InvoiceItem.create!(invoice_id: @invoice.id, quantity: 4, unit_price: 54321)
 
     end
 
