@@ -1,3 +1,6 @@
+[![Stories in Ready](https://badge.waffle.io/mbburch/rails-engine.svg?label=ready&title=Ready)](http://waffle.io/mbburch/rails-engine)
+[![Throughput Graph](https://graphs.waffle.io/mbburch/rails-engine/throughput.svg)](https://waffle.io/mbburch/rails-engine/metrics)
+
 This was an individual project in Module 3 at Turing School of Software & Design. The project description can be found here: [Project Outline](https://github.com/turingschool/lesson_plans/blob/master/ruby_03-professional_rails_applications/rails_engine.md)
 
 I used Rails and ActiveRecord to build a JSON API which exposes the SalesEngine data schema. Sales Engine was a project completed in Module 1.
